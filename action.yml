@@ -1,0 +1,25 @@
+name: Publish Dev Container template
+description: 🚀 Publish a singular Dev Container template
+branding:
+  icon: upload-cloud
+  color: blue
+inputs:
+  path:
+    default: .
+  source:
+    default: ${{ github.server_url }}/${{ github.repository }}
+  image:
+    default: ghcr.io/${{ github.repository_owner }}/templates/*
+  latest:
+    default: true
+runs:
+  using: composite
+  steps:
+    - id: main
+      run: '"$GITHUB_ACTION_PATH/mainw"'
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_SOURCE: ${{ inputs.source }}
+        INPUT_IMAGE: ${{ inputs.image }}
+        INPUT_LATEST: ${{ inputs.latest }}

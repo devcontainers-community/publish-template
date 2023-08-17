@@ -1,0 +1,56 @@
+name: Test action
+on:
+  push:
+    branches: "main"
+    paths-ignore:
+      - .gitignore
+      - .gitattributes
+      - LICENSE
+      - README.md
+      - .github/**
+      - "!.github/workflows/test-action.yml"
+  pull_request:
+    paths-ignore:
+      - .gitignore
+      - .gitattributes
+      - LICENSE
+      - README.md
+      - .github/**
+      - "!.github/workflows/test-action.yml"
+concurrency: ${{ github.workflow }}
+jobs:
+  publish-test:
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oras-project/setup-oras@v1
+      - uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./
+        with:
+          path: test
+          image: ghcr.io/${{ github.repository }}/*
+      - run: |
+          pushd "$(mktemp -d)"
+          oras manifest fetch ghcr.io/${{ github.repository }}/test:latest | jq
+          oras pull ghcr.io/${{ github.repository }}/test:latest
+          tree -a
+          tar -xvf devcontainer-template-test.tgz
+          tree -a
+          jq '' devcontainer-template.json
+          cat install.sh
+      - run: |
+          pushd "$(mktemp -d)"
+          oras manifest fetch ghcr.io/devcontainers/templates/rust:latest | jq
+          oras pull ghcr.io/devcontainers/templates/rust:latest
+          tree -a
+          tar -xvf devcontainer-template-rust.tgz
+          tree -a
+          jq '' devcontainer-template.json
+          cat install.sh

@@ -1,0 +1,3 @@
+mainw eol=lf
+main.ts eol=lf
+*.sh eol=lf
