@@ -27,7 +27,7 @@ const image = core.getInput("image").replace("*", devcontainerTemplate.id);
 const annotations = {
   $manifest: {
     "com.github.package.type": "devcontainer_template",
-    "dev.containers.metadata": JSON.stringify(devcontainerTemplate),
+    // "dev.containers.metadata": JSON.stringify(devcontainerTemplate),
     "org.opencontainers.image.source": source,
   },
   [archivePath]: {
