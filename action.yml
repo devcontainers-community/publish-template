@@ -15,6 +15,7 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: oras-project/setup-oras@v1
     - id: main
       run: '"$GITHUB_ACTION_PATH/mainw"'
       shell: bash
