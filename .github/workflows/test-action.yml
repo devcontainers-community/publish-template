@@ -44,7 +44,7 @@ jobs:
           tar -xvf devcontainer-template-test.tgz
           tree -a
           jq '' devcontainer-template.json
-          cat install.sh
+          cat .devcontainer/devcontainer.json
       - run: |
           pushd "$(mktemp -d)"
           oras manifest fetch ghcr.io/devcontainers/templates/rust:latest | jq
@@ -53,4 +53,4 @@ jobs:
           tar -xvf devcontainer-template-rust.tgz
           tree -a
           jq '' devcontainer-template.json
-          cat install.sh
+          cat .devcontainer/devcontainer.json
