@@ -26,7 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: oras-project/setup-oras@v1
       - uses: docker/login-action@v2
         with:
           registry: ghcr.io
@@ -36,6 +35,7 @@ jobs:
         with:
           path: test
           image: ghcr.io/${{ github.repository }}/*
+      - uses: oras-project/setup-oras@v1
       - run: |
           pushd "$(mktemp -d)"
           oras manifest fetch ghcr.io/${{ github.repository }}/test:latest | jq
